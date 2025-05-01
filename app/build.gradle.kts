@@ -40,7 +40,8 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.janino)
+    implementation(libs.commons.jexl3)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
