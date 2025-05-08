@@ -129,7 +129,7 @@ fun CodeFlowScreen(modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .height(150.dp)
                 .verticalScroll(scrollState)
-                .border(1.dp, Color.Gray) // voliteľné pre rámik
+                .border(1.dp, Color.Gray) 
         ) {
             TextField(
                 value = textKodu,
@@ -137,7 +137,7 @@ fun CodeFlowScreen(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(min = 150.dp)
-                    .background(Color.White), // voliteľné
+                    .background(Color.White), 
                 textStyle = LocalTextStyle.current.copy(lineHeight = 20.sp)
             )
         }
@@ -146,7 +146,7 @@ fun CodeFlowScreen(modifier: Modifier = Modifier) {
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp) // medzera medzi tlačidlami
+            horizontalArrangement = Arrangement.spacedBy(8.dp) 
         ) {
             Button(onClick = {
                 try {
