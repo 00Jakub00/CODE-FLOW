@@ -52,6 +52,11 @@ class Vyraz (
         }
 
         fun upravVyraz(vyraz: String): String {
+            val uzUpravenyVyraz = Regex("""^\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*\1\s*[\+\-\*/]\s*.+$""")
+            if (uzUpravenyVyraz.matches(vyraz.trim())) {
+                return vyraz
+            }
+            
             val regex = Regex("([a-zA-Z_][a-zA-Z0-9_]*)\\s*(\\+\\+|--|[+\\-*/]=)\\s*(.+)?")
             val match = regex.find(vyraz)
             var upravenyVyraz = ""

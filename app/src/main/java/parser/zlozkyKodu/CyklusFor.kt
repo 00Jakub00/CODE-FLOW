@@ -128,7 +128,7 @@ class CyklusFor(val datovyTyp: String,
 
                         6 -> {
                             if (j == retazec.length - 2) {
-                                krok = kontrolaPrikazu
+                                krok = Vyraz.upravVyraz(kontrolaPrikazu)
                             }
                         }
                     }
