@@ -100,7 +100,6 @@ abstract class KodovyBlok(var zoznamPrikazov: List<String>) {
         }
     }
 
-
      fun zistiOAkyTypKoduSaJedna(kod: String): TypKodovehoBloku? {
         val kodTrim = kod.trim()  // Odstránime prebytočné medzery
 
@@ -158,5 +157,22 @@ abstract class KodovyBlok(var zoznamPrikazov: List<String>) {
                 (hotovePrikazy[i] as KodovyBlok).vypisVyhodnotenePrikazy()
             }
         }
+    }
+
+    fun dajMiTvojePrikazy(): MutableList<CastKodu> {
+        val prikazy: MutableList<CastKodu> = mutableListOf()
+
+        var poradiePrikazu = 0
+        while (poradiePrikazu < hotovePrikazy.size) {
+            val prikaz = hotovePrikazy[poradiePrikazu]
+            prikazy.add(prikaz)
+
+            if (prikaz is KodovyBlok) {
+                prikazy.addAll(prikaz.dajMiTvojePrikazy())
+            }
+
+            poradiePrikazu++
+        }
+        return prikazy
     }
 }

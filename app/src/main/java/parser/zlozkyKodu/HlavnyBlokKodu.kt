@@ -4,21 +4,41 @@ import org.example.zlozkyKodu.InformativnyPrikaz
 
 
 class HlavnyBlokKodu(kod: String) : KodovyBlok(getCodeStatements(kod)) {
+    var hotovePrikazyVPoradi: MutableList<CastKodu> = mutableListOf()
+    var prikazCislo = 0
 
     companion object {
            private fun getCodeStatements(kod: String): MutableList<String> {
                val regex = "(\\{\\}|\\}|\\{|;|[^{};]+)".toRegex()
                     val rozdelenyKod = regex.findAll(kod).map { it.value.trim() }.filter { it.isNotEmpty() }.toList()
-        //            println("Pocet prikazov: ${rozdelenyKod.size}")
-         //           rozdelenyKod.forEach { println(it) }
                     return rozdelenyKod.toMutableList()
        }
     }
-    fun buttonExecute() {
+
+    fun zaciatokProgramu(): String {
+        return hotovePrikazyVPoradi[prikazCislo].vyhodnotKod()
+    }
+
+    fun spracujKod() {
         hotovePrikazy.add(InformativnyPrikaz("Začiatok programu!"))
         spracujPrikazy()
         hotovePrikazy.add(InformativnyPrikaz("Koniec programu!"))
-        vypisVyhodnotenePrikazy()
+
+        hotovePrikazyVPoradi = dajMiTvojePrikazy()
+    }
+
+     fun dajMiNasledujuciVyhodnotenyPrikaz(): String {
+         if (prikazCislo < hotovePrikazyVPoradi.size - 1) {
+             prikazCislo++
+         }
+         return hotovePrikazyVPoradi[prikazCislo].vyhodnotKod()
+     }
+
+    fun dajMiPredchadzajuciVyhodnotenyPrikaz(): String {
+        if (prikazCislo > 0) {
+            prikazCislo--
+        }
+        return hotovePrikazyVPoradi[prikazCislo].vyhodnotKod()
     }
 
 }
