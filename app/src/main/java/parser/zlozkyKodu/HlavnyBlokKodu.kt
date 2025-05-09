@@ -31,6 +31,7 @@ class HlavnyBlokKodu(kod: String) : KodovyBlok(getCodeStatements(kod)) {
          if (prikazCislo < hotovePrikazyVPoradi.size - 1) {
              prikazCislo++
          }
+         println("dsd")
          return hotovePrikazyVPoradi[prikazCislo].vyhodnotKod()
      }
 
