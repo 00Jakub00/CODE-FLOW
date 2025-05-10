@@ -31,6 +31,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.codeflow.ui.theme.CodeFlowTheme
@@ -50,6 +54,22 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+fun zvyrazneRiadky(text: String, lineIndices: List<Int>, highlightColor: Color): AnnotatedString {
+    val lines = text.lines()
+    return buildAnnotatedString {
+        lines.forEachIndexed { index, line ->
+            if (index in lineIndices) {
+                withStyle(style = SpanStyle(color = highlightColor)) {
+                    append(line)
+                }
+            } else {
+                append(line)
+            }
+            if (index != lines.lastIndex) append("\n")
+        }
+    }
+}
+
 @Composable
 fun CodeFlowScreen(modifier: Modifier = Modifier) {
     var textKodu by remember { mutableStateOf(
@@ -59,59 +79,20 @@ fun CodeFlowScreen(modifier: Modifier = Modifier) {
         int b = 5 + 5; 
         a = 5 * b; 
         b = 19;
-        for (int i = 0; i < 10; i = a + 1) {
+        for (int i = 0; i < 10; i++){
             for (int j = 0; j < 8; j = j + 1) {
-                a = a + 3;
-                if (j == 3) {
-                    int kk = 5;
-                    continue;
-                }
-                continue;
-                int leto = 12;
+                 a = a + 3;
+                 if (j == 3) {
+                     int kk = 5;
+                     continue;
+                 }
+                 continue;
+                 int leto = 12;
             }
         }
-        a = a + 5; 
-        b = b * 10;
-        double c = 12.7;
-        c = c + b;
-        int aa = 5;
-        int bb = 20;
-        while (aa < bb) {
-            a = a + 2;
-            if (4 < 10) { 
-                aa = aa + 2;
-                break;
-            }
-            aa = aa + 1;
-            System.out.println("Jirka ma " +  a   + " rokov.");
-        }
-        if (5 > 5) {
-            System.out.print("4 je mensie ako 5, taka je pravdaaaa ");
-        }
-        else if (5 > 72) {
-            System.out.print("4 je mensie ako 5, taka je pravda ");
-        }
-        else {
-            System.out.println("Vetva poslednej možnosti");
-        }
-        int vajce = 200;
-        do {
-            if (vajce == 150) {
-                vajce = vajce - 5;
-                continue;
-            }
-            if (vajce == 120) {
-                vajce = vajce - 5;
-                break;
-            }
-            vajce--;
-        } while(vajce > 100);
-        int dado = 17;
-        do {
-            vajce--;
-        } while(vajce > 50);
-    """.trimIndent()) }
+        """.trimIndent()) }
 
+    var zafarbeneRiadky by remember { mutableStateOf(listOf<Int>()) }
     val scrollState = rememberScrollState()
     val parser = remember(textKodu) {
         HlavnyBlokKodu(textKodu).apply { spracujKod() }
@@ -131,14 +112,12 @@ fun CodeFlowScreen(modifier: Modifier = Modifier) {
                 .verticalScroll(scrollState)
                 .border(1.dp, Color.Gray) 
         ) {
-            TextField(
-                value = textKodu,
-                onValueChange = { textKodu = it },
+            Text(
+                text = zvyrazneRiadky(textKodu, zafarbeneRiadky, Color.Red),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 150.dp)
-                    .background(Color.White), 
-                textStyle = LocalTextStyle.current.copy(lineHeight = 20.sp)
+                    .background(Color.White),
+                style = LocalTextStyle.current.copy(lineHeight = 20.sp)
             )
         }
 
@@ -152,7 +131,8 @@ fun CodeFlowScreen(modifier: Modifier = Modifier) {
                 try {
                     val vystupnyText = parser?.dajMiNasledujuciVyhodnotenyPrikaz()
                         ?: "Parser nie je inicializovaný"
-                    vystup = vystupnyText.toString()
+                    vystup = vystupnyText
+                    zafarbeneRiadky = listOf(parser.dajMiIndexRiadkuPodlaIndexuPrikazu())
                 } catch (e: Exception) {
                     vystup = "Chyba: ${e.message}"
                 }
@@ -165,6 +145,11 @@ fun CodeFlowScreen(modifier: Modifier = Modifier) {
                     val vystupnyText = parser?.dajMiPredchadzajuciVyhodnotenyPrikaz()
                         ?: "Parser nie je inicializovaný"
                     vystup = vystupnyText.toString()
+                    if (parser.dajMiIndexRiadkuPodlaIndexuPrikazu() >= 0) {
+                        zafarbeneRiadky = listOf(parser.dajMiIndexRiadkuPodlaIndexuPrikazu())
+                    } else {
+                        zafarbeneRiadky = listOf()
+                    }
                 } catch (e: Exception) {
                     vystup = "Chyba: ${e.message}"
                 }

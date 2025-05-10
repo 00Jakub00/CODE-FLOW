@@ -19,6 +19,10 @@ class HlavnyBlokKodu(kod: String) : KodovyBlok(getCodeStatements(kod)) {
         return hotovePrikazyVPoradi[prikazCislo].vyhodnotKod()
     }
 
+    fun dajMiIndexRiadkuPodlaIndexuPrikazu(): Int {
+        return prikazCislo - 1
+    }
+
     fun spracujKod() {
         hotovePrikazy.add(InformativnyPrikaz("Začiatok programu!"))
         spracujPrikazy()
@@ -31,15 +35,17 @@ class HlavnyBlokKodu(kod: String) : KodovyBlok(getCodeStatements(kod)) {
          if (prikazCislo < hotovePrikazyVPoradi.size - 1) {
              prikazCislo++
          }
-         println("dsd")
          return hotovePrikazyVPoradi[prikazCislo].vyhodnotKod()
      }
 
     fun dajMiPredchadzajuciVyhodnotenyPrikaz(): String {
         if (prikazCislo > 0) {
             prikazCislo--
+            return hotovePrikazyVPoradi[prikazCislo].vyhodnotKod()
+        } else {
+            return hotovePrikazyVPoradi[0].vyhodnotKod()
         }
-        return hotovePrikazyVPoradi[prikazCislo].vyhodnotKod()
+
     }
 
 }
