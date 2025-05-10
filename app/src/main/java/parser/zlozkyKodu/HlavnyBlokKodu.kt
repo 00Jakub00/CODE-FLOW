@@ -1,6 +1,8 @@
 package com.example.visualizationofcode.ui.theme.zloky.kodu
 
+import org.example.zlozkyKodu.CyklickyBlok
 import org.example.zlozkyKodu.InformativnyPrikaz
+import parser.zlozkyKodu.PrikazVystupu
 
 
 class HlavnyBlokKodu(kod: String) : KodovyBlok(getCodeStatements(kod)) {
@@ -23,12 +25,32 @@ class HlavnyBlokKodu(kod: String) : KodovyBlok(getCodeStatements(kod)) {
         return prikazCislo - 1
     }
 
+    fun jePrikazPosledny(): Boolean {
+        return prikazCislo == hotovePrikazyVPoradi.size - 1
+    }
+
     fun spracujKod() {
         hotovePrikazy.add(InformativnyPrikaz("Začiatok programu!"))
         spracujPrikazy()
         hotovePrikazy.add(InformativnyPrikaz("Koniec programu!"))
 
         hotovePrikazyVPoradi = dajMiTvojePrikazy()
+    }
+
+    fun jeAkualnyPrikazVystupny(): Boolean {
+        return hotovePrikazyVPoradi[prikazCislo] is PrikazVystupu
+    }
+
+    fun jeAktualnyPrikazKodovyBlok(): Boolean {
+        return hotovePrikazyVPoradi[prikazCislo] is KodovyBlok
+    }
+
+    fun jeAktualnyPrikazInformativny(): Boolean {
+        return hotovePrikazyVPoradi[prikazCislo] is InformativnyPrikaz
+    }
+
+    fun jeAtualnyPrikazCyklus(): Boolean {
+        return hotovePrikazyVPoradi[prikazCislo] is CyklickyBlok
     }
 
      fun dajMiNasledujuciVyhodnotenyPrikaz(): String {

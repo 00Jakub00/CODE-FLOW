@@ -2,6 +2,7 @@ package com.example.visualizationofcode.ui.theme.zloky.kodu
 
 import org.example.zlozkyKodu.CyklickyBlok
 import org.example.zlozkyKodu.InformativnyPrikaz
+import parser.zlozkyKodu.PrikazVystupu
 
 class CyklusWhile(var podmienka: String): CyklickyBlok(), CastKodu {
 
@@ -67,7 +68,7 @@ class CyklusWhile(var podmienka: String): CyklickyBlok(), CastKodu {
             }
         }
 
-        hotovePrikazy.add(InformativnyPrikaz("Vystupujeme z cyklu while!"))
+        hotovePrikazy.add(PrikazVystupu("Vystupujeme z cyklu while!"))
         return pocetPrikazovVCykle
     }
 

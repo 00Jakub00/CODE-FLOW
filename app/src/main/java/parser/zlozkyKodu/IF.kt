@@ -1,6 +1,7 @@
 package com.example.visualizationofcode.ui.theme.zloky.kodu
 
 import org.example.zlozkyKodu.InformativnyPrikaz
+import parser.zlozkyKodu.PrikazVystupu
 
 class IF(var podmienka: String) : KodovyBlok(), CastKodu {
 
@@ -98,7 +99,7 @@ class IF(var podmienka: String) : KodovyBlok(), CastKodu {
         } while (true)
 
         if (nastaloVnorenie) {
-            hotovePrikazy.add(InformativnyPrikaz("Vynaram sa z vetvy s pomienkou: $podmienka"))
+            hotovePrikazy.add(PrikazVystupu("Vynaram sa z vetvy s pomienkou: $podmienka"))
         }
       //  println("Vraciam $poradieVykonanehoPrikazu prikazov")
         return poradieVykonanehoPrikazu - 1

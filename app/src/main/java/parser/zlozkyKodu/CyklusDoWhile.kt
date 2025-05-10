@@ -4,6 +4,7 @@ import com.example.visualizationofcode.ui.theme.zloky.kodu.CastKodu
 import com.example.visualizationofcode.ui.theme.zloky.kodu.KodovyBlok
 import com.example.visualizationofcode.ui.theme.zloky.kodu.TypKodovehoBloku
 import com.example.visualizationofcode.ui.theme.zloky.kodu.Vyraz
+import parser.zlozkyKodu.PrikazVystupu
 
 class CyklusDoWhile : CyklickyBlok(), CastKodu {
     var podmienka = ""
@@ -77,7 +78,7 @@ class CyklusDoWhile : CyklickyBlok(), CastKodu {
            //     println("Takto je vyhodnotena podmienka $vysledok")
             } while (vysledok)
 
-            hotovePrikazy.add(InformativnyPrikaz("Vystupujem z cyklu Do While!"))
+            hotovePrikazy.add(PrikazVystupu("Vystupujem z cyklu Do While!"))
             pocetPrikazovVCykle++
             return pocetPrikazovVCykle
         }

@@ -2,6 +2,7 @@ package com.example.visualizationofcode.ui.theme.zloky.kodu
 
 import org.example.zlozkyKodu.CyklickyBlok
 import org.example.zlozkyKodu.InformativnyPrikaz
+import parser.zlozkyKodu.PrikazVystupu
 
 class CyklusFor(val datovyTyp: String,
               val nazovPremennej: String,
@@ -199,7 +200,7 @@ class CyklusFor(val datovyTyp: String,
             }
         }
 
-        hotovePrikazy.add(InformativnyPrikaz("Vystupujeme z cyklu for!"))
+        hotovePrikazy.add(PrikazVystupu("Vystupujeme z cyklu for!"))
         return pocetPrikazovVCykle
     }
 
