@@ -6,6 +6,7 @@ class KniznicaKodov {
     init {
         kody.add("""
         String q = "ahoj"; 
+        String qas = "ahoj"; 
         int a = 5 * 6 - (12 / 4); 
         int b = 5 + 5; 
         if (5 < 4) {
