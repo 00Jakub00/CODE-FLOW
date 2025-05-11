@@ -1,5 +1,6 @@
 package com.example.codeflow
 
+import android.util.Log
 import com.example.visualizationofcode.ui.theme.zloky.kodu.HlavnyBlokKodu
 
 class Deterministika {
@@ -34,39 +35,28 @@ class Deterministika {
     }
 
     fun operaciaKliknutieDoPredu(parser: HlavnyBlokKodu, zvyraznenie: Zvyraznenie, cisloRiadku: Int, textKodu: String): Int {
-        if (parser.jeAktualnyPrikazInformativny() && !parser.jePrikazPosledny()) {
-            odzvyraznenieRiadku = true
+        if (parser.jeAktualnyPrikazInformativny() && !parser.bolPrikazPosledny()) {
+            zvyraznenie.odzvyraznitRiadok = true
+
             return zvyraznenie.dajMiPrvyIndexPoslednehoBloku()
         } else if (parser.jeAtualnyPrikazCyklus()) {
-            odzvyraznenieRiadku = true
+            zvyraznenie.odzvyraznitRiadok = true
+            Log.d("KrokovanieKodu", "Zvyraznenie v deterministike: ${zvyraznenie.odzvyraznitRiadok}")
             zvyraznenie.pridajZvyraznenie(najdiIndexyZatvoriekOdIndexu(textKodu, cisloRiadku), "cyklus")
             return cisloRiadku
         } else if (parser.jeAktualnyPrikazKodovyBlok()) {
-            odzvyraznenieRiadku = true
+            zvyraznenie.odzvyraznitRiadok = true
             zvyraznenie.pridajZvyraznenie(najdiIndexyZatvoriekOdIndexu(textKodu, cisloRiadku), "kodovy blok")
             return cisloRiadku
         } else if (parser.jeAkualnyPrikazVystupny()) {
-            odzvyraznenieRiadku = true
+            zvyraznenie.odzvyraznitRiadok = true
             zvyraznenie.odoberZvyraznenie()
             return cisloRiadku
         } else {
-            odzvyraznenieRiadku = false
             zvyraznenie.zmenAktualnyOznacenyRiadok(cisloRiadku)
+            zvyraznenie.odzvyraznitRiadok = false
             return cisloRiadku
         }
     }
 
-    fun operaciaKliknutieDoZadu(parser: HlavnyBlokKodu, zvyraznenie: Zvyraznenie) {
-        if (parser.jeAkualnyPrikazVystupny()) {
-            odzvyraznenieRiadku = true
-            zvyraznenie.odoberOdobraneZvyraznenie()
-        } else if (parser.jeAktualnyPrikazKodovyBlok()) {
-            zvyraznenie.odoberZvyraznenie()
-            odzvyraznenieRiadku = true
-        } else if (parser.jeAktualnyPrikazInformativny()) {
-            odzvyraznenieRiadku = true
-        } else {
-            odzvyraznenieRiadku = false
-        }
-    }
 }

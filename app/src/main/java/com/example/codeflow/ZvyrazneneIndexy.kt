@@ -7,3 +7,5 @@ data class ZvyrazneneIndexy(
     val farba: Color,
     val typBloku: String
 )
+
+

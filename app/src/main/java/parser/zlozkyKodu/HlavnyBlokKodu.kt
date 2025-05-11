@@ -21,11 +21,8 @@ class HlavnyBlokKodu(kod: String) : KodovyBlok(getCodeStatements(kod)) {
         return hotovePrikazyVPoradi[prikazCislo].vyhodnotKod()
     }
 
-    fun dajMiIndexRiadkuPodlaIndexuPrikazu(): Int {
-        return prikazCislo - 1
-    }
 
-    fun jePrikazPosledny(): Boolean {
+    fun bolPrikazPosledny(): Boolean {
         return prikazCislo == hotovePrikazyVPoradi.size - 1
     }
 

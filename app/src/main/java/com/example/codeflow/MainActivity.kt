@@ -1,6 +1,7 @@
 package com.example.codeflow
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.codeflow.ui.theme.CodeFlowTheme
 import com.example.visualizationofcode.ui.theme.zloky.kodu.HlavnyBlokKodu
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,47 +50,11 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-/*fun zvyrazneRiadky(text: String, lineIndices: List<Int>, highlightColor: Color): AnnotatedString {
-    val lines = text.lines()
-    return buildAnnotatedString {
-        lines.forEachIndexed { index, line ->
-            if (index in lineIndices) {
-                withStyle(style = SpanStyle(color = highlightColor)) {
-                    append(line)
-                }
-            } else {
-                append(line)
-            }
-            if (index != lines.lastIndex) append("\n")
-        }
-    }
-}*/
-
 
 @Composable
 fun CodeFlowScreen(modifier: Modifier = Modifier) {
-    var textKodu by remember { mutableStateOf(
-        """
-        String q = "ahoj"; 
-        int a = 5 * 6 - (12 / 4); 
-        int b = 5 + 5; 
-        a = 5 * b; 
-        b = 19;
-        for (int i = 0; i < 10; i++) {
-            a = a + 8;
-            b = a;
-            System.out.println(a + " ahojjj");
-        }
-        """.trimIndent()) }
-    val pocetRiadkov = textKodu.lines().size
-    val deterministika = remember { Deterministika() }
-    var cisloRiadku by remember { mutableStateOf(-1) }
-    val zvyraznenie = remember { Zvyraznenie() }
+    val krokovanieKodu: KrokovanieKodu = viewModel()
     val scrollState = rememberScrollState()
-    val parser = remember(textKodu) {
-        HlavnyBlokKodu(textKodu).apply { spracujKod() }
-    }
-    var vystup by remember { mutableStateOf(parser.zaciatokProgramu()) }
 
     Column(
         modifier = modifier
@@ -104,7 +70,7 @@ fun CodeFlowScreen(modifier: Modifier = Modifier) {
                 .border(1.dp, Color.Gray) 
         ) {
             Text(
-                text = zvyraznenie.zvyrazniRiadky(textKodu, deterministika.odzvyraznenieRiadku),
+                text = krokovanieKodu.dajMiZvyrazneneRiadky(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.White),
@@ -119,34 +85,13 @@ fun CodeFlowScreen(modifier: Modifier = Modifier) {
             horizontalArrangement = Arrangement.spacedBy(8.dp) 
         ) {
             Button(onClick = {
-                try {
-                    val vystupnyText = parser?.dajMiNasledujuciVyhodnotenyPrikaz()
-                        ?: "Parser nie je inicializovaný"
-                    vystup = vystupnyText
-
-                    cisloRiadku++
-                    cisloRiadku = deterministika.operaciaKliknutieDoPredu(parser, zvyraznenie, cisloRiadku, textKodu)
-                    zvyraznenie.pridajRiadok(cisloRiadku)
-
-                } catch (e: Exception) {
-                    vystup = "Chyba: ${e.message}"
-                }
+                krokovanieKodu.klikVpred()
             }) {
                 Text("Ďalší krok")
             }
 
             Button(onClick = {
-                try {
-                    val vystupnyText = parser?.dajMiPredchadzajuciVyhodnotenyPrikaz()
-                        ?: "Parser nie je inicializovaný"
-                    vystup = vystupnyText.toString()
-
-                    cisloRiadku = zvyraznenie.odoberADajMiPoslednyIndexRiadku()
-                    deterministika.operaciaKliknutieDoZadu(parser, zvyraznenie)
-
-                } catch (e: Exception) {
-                    vystup = "Chyba: ${e.message}"
-                }
+                krokovanieKodu.klikVzad()
             }) {
                 Text("Krok späť")
             }
@@ -155,7 +100,7 @@ fun CodeFlowScreen(modifier: Modifier = Modifier) {
 
         Text("Výstup:")
         TextField(
-            value = vystup,
+            value = krokovanieKodu.vystupnyText,
             onValueChange = {},
             readOnly = true,
             modifier = Modifier

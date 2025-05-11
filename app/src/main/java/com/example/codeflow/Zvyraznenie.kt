@@ -1,5 +1,6 @@
 package com.example.codeflow
 
+import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -7,12 +8,9 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 
 class Zvyraznenie {
-    val zvyraznene: MutableList<ZvyrazneneIndexy> = mutableListOf()
+    var zvyraznene: MutableList<ZvyrazneneIndexy> = mutableListOf()
 
-    val odobraneZvyraznenie: MutableList<ZvyrazneneIndexy> = mutableListOf()
-
-    val poradieZvyraznenychRiadkov: MutableList<Int> = mutableListOf()
-
+    var odzvyraznitRiadok = false
     var referencaFarba = Color(128, 223, 255)
 
     var aktualnyRiadok = -1
@@ -25,13 +23,6 @@ class Zvyraznenie {
         referencaFarba = Color(red, green, blue)
     }
 
-    fun pridajRiadok(index: Int) {
-        poradieZvyraznenychRiadkov.add(index)
-    }
-
-    fun odoberADajMiPoslednyIndexRiadku(): Int {
-        return poradieZvyraznenychRiadkov.removeAt(poradieZvyraznenychRiadkov.size - 1)
-    }
 
     fun dajMiPrvyIndexPoslednehoBloku(): Int {
         return zvyraznene.last().indexy.first()
@@ -47,14 +38,10 @@ class Zvyraznenie {
     }
 
     fun odoberZvyraznenie() {
-        odobraneZvyraznenie.add(zvyraznene.removeAt(zvyraznene.size - 1))
+        zvyraznene.removeAt(zvyraznene.size - 1)
     }
 
-    fun odoberOdobraneZvyraznenie() {
-        zvyraznene.add(odobraneZvyraznenie.removeAt(odobraneZvyraznenie.size - 1))
-    }
-
-    fun zvyrazniRiadky(textKodu: String, odzvyraznitRiadok: Boolean): AnnotatedString {
+    fun zvyrazniRiadky(textKodu: String): AnnotatedString {
         val riadky = textKodu.lines()
         return buildAnnotatedString {
             riadky.forEachIndexed { index, riadok ->
@@ -85,5 +72,14 @@ class Zvyraznenie {
                 }
             }
         }
+    }
+
+    fun nakopirujSa(): Zvyraznenie {
+        val nova = Zvyraznenie()
+        nova.referencaFarba = this.referencaFarba
+        nova.odzvyraznitRiadok = this.odzvyraznitRiadok
+        nova.aktualnyRiadok = this.aktualnyRiadok
+        nova.zvyraznene = this.zvyraznene.map { it.copy() }.toMutableList()
+        return nova
     }
 }
