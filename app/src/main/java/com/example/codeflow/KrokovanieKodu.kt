@@ -47,6 +47,7 @@ class KrokovanieKodu : ViewModel() {
         if (parser.hotovePrikazyVPoradi.size - 1 > parser.prikazCislo) {
             vystupnyText = parser.dajMiNasledujuciVyhodnotenyPrikaz()
             zvyraznenie = historiaZvyrazneni.get(parser.prikazCislo)
+            //dadad
         }
     }
 
