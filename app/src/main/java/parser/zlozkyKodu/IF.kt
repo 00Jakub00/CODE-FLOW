@@ -23,6 +23,10 @@ class IF(var podmienka: String) : KodovyBlok(), CastKodu {
             kodovyBlok.hotovePrikazy.add(iffko)
             return true
         }
+
+        fun jePrikazIF(kod: String): Boolean {
+            return listOf("if", "else if", "else").any { kod.startsWith(it) }
+        }
     }
 
     override fun spracujPrikazy(): Int {

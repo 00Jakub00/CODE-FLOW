@@ -82,6 +82,10 @@ class Zvyraznenie {
         return zvyraznene.any { it.zvyraznenaFarba == farba }
     }
 
+    fun dajMiTypPoslednehoZvyraznenia(): String {
+        return zvyraznene.last().typBloku
+    }
+
     fun nakopirujSa(): Zvyraznenie {
         val nova = Zvyraznenie()
         nova.odzvyraznitRiadok = this.odzvyraznitRiadok

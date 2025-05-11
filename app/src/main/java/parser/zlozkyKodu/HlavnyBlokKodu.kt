@@ -23,6 +23,10 @@ class HlavnyBlokKodu(kod: String) : KodovyBlok(getCodeStatements(kod)) {
         return hotovePrikazyVPoradi[prikazCislo + 1]
     }
 
+    fun dajMiAktualnyPrikaz(): CastKodu {
+        return hotovePrikazyVPoradi[prikazCislo]
+    }
+
     fun zaciatokProgramu(): String {
         return hotovePrikazyVPoradi[prikazCislo].vyhodnotKod()
     }
@@ -44,8 +48,8 @@ class HlavnyBlokKodu(kod: String) : KodovyBlok(getCodeStatements(kod)) {
         return hotovePrikazyVPoradi[prikazCislo] is PrikazVystupu
     }
 
-    fun jeAktualnyPrikazKodovyBlok(): Boolean {
-        return hotovePrikazyVPoradi[prikazCislo] is KodovyBlok
+    fun jeAktualnyPrikazIF(): Boolean {
+        return hotovePrikazyVPoradi[prikazCislo] is IF
     }
 
     fun jeAktualnyPrikazInformativny(): Boolean {

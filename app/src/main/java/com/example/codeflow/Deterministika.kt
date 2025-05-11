@@ -1,11 +1,13 @@
 package com.example.codeflow
 
 import com.example.visualizationofcode.ui.theme.zloky.kodu.HlavnyBlokKodu
+import com.example.visualizationofcode.ui.theme.zloky.kodu.IF
 import org.example.zlozkyKodu.InformativnyPrikaz
 
 class Deterministika {
 
     var odzvyraznenieRiadku: Boolean = false
+    var skok: Int = 0
 
     fun najdiIndexyZatvoriekOdIndexu(text: String, startIndex: Int): List<Int> {
         val lines = text.lines()
@@ -23,8 +25,27 @@ class Deterministika {
                 break
             }
         }
-
         return indices
+    }
+
+    fun dajMiPoslednyIndexPreSkupinuZatvoriek(text: String, startIndex: Int): Int {
+        val lines = text.lines()
+        val indices = mutableListOf<Int>()
+        var openBraces = 0
+        var closeBraces = 0
+
+        for (i in startIndex until lines.size) {
+            val line = lines[i]
+            openBraces += line.count { it == '{' }
+            closeBraces += line.count { it == '}' }
+            indices.add(i)
+
+            if (openBraces == closeBraces && openBraces > 0) {
+                break
+            }
+        }
+
+        return indices.last()
     }
 
 
@@ -42,10 +63,35 @@ class Deterministika {
             zvyraznenie.odzvyraznitRiadok = true
             zvyraznenie.pridajZvyraznenie(najdiIndexyZatvoriekOdIndexu(textKodu, cisloRiadku), "cyklus")
             return cisloRiadku
-        } else if (parser.jeAktualnyPrikazKodovyBlok()) {
+        } else if (parser.jeAktualnyPrikazIF()) {
+            var iffko: IF = parser.dajMiAktualnyPrikaz() as IF
+            var riadky = textKodu.lines()
+            var cr = cisloRiadku
+            var riadok = cisloRiadku
+            var poradie = 1
             zvyraznenie.odzvyraznitRiadok = true
-            zvyraznenie.pridajZvyraznenie(najdiIndexyZatvoriekOdIndexu(textKodu, cisloRiadku), "kodovy blok")
-            return cisloRiadku
+            
+            do {
+                cr = dajMiPoslednyIndexPreSkupinuZatvoriek(textKodu, cr)
+                cr++
+            } while (IF.jePrikazIF(riadky[cr]))
+
+            cr--
+            skok = cr
+
+            if (iffko.vetvaCislo == 0) {
+                return cr
+            }
+
+            while (poradie < iffko.vetvaCislo) {
+                riadok = dajMiPoslednyIndexPreSkupinuZatvoriek(textKodu, riadok)
+                poradie++
+                riadok++
+            }
+            zvyraznenie.pridajZvyraznenie(najdiIndexyZatvoriekOdIndexu(textKodu, riadok), "if")
+
+
+            return riadok
         } else if (parser.jeAktualnyPrikazContinue()) {
             zvyraznenie.zmenAktualnyOznacenyRiadok(cisloRiadku)
             if (parser.dajMiDalsiPrikaz() is InformativnyPrikaz) {
@@ -62,8 +108,13 @@ class Deterministika {
             val pomocna = zvyraznenie.dajMiPoslednyIndexPoslednehoBloku()
             return pomocna - 1
         } else if (parser.jeAkualnyPrikazVystupny()) {
+            var typ = zvyraznenie.dajMiTypPoslednehoZvyraznenia()
             zvyraznenie.odzvyraznitRiadok = true
             zvyraznenie.odoberZvyraznenie()
+
+            if (typ == "if") {
+                return skok
+            }
             return cisloRiadku
         } else {
             zvyraznenie.zmenAktualnyOznacenyRiadok(cisloRiadku)

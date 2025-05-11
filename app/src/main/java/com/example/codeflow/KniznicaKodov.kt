@@ -8,6 +8,15 @@ class KniznicaKodov {
         String q = "ahoj"; 
         int a = 5 * 6 - (12 / 4); 
         int b = 5 + 5; 
+        if (5 < 4) {
+            System.out.println("ahoj");
+        } 
+        else if (5 > 6) {
+            System.out.println("ahoj");
+        } 
+        else if (5 == 6) {
+            System.out.println("ahoj");
+        } 
         a = 5 * b; 
         b = 19;
         for (int i = 0; i < 5; i++) {
