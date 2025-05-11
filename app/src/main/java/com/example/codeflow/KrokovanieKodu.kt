@@ -36,6 +36,7 @@ class KrokovanieKodu : ViewModel() {
                 cisloRiadku,
                 textKodu
             )
+            //dssd
             historiaZvyrazneni.add(zvyraznenie.nakopirujSa())
             vypisIndexy(historiaZvyrazneni[historiaZvyrazneni.size - 1])
         }
