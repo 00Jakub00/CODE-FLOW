@@ -1,5 +1,7 @@
 package com.example.visualizationofcode.ui.theme.zloky.kodu
 
+import org.example.zlozkyKodu.Break
+import org.example.zlozkyKodu.Continue
 import org.example.zlozkyKodu.CyklickyBlok
 import org.example.zlozkyKodu.InformativnyPrikaz
 import parser.zlozkyKodu.PrikazVystupu
@@ -15,6 +17,10 @@ class HlavnyBlokKodu(kod: String) : KodovyBlok(getCodeStatements(kod)) {
                     val rozdelenyKod = regex.findAll(kod).map { it.value.trim() }.filter { it.isNotEmpty() }.toList()
                     return rozdelenyKod.toMutableList()
        }
+    }
+
+    fun dajMiDalsiPrikaz(): CastKodu {
+        return hotovePrikazyVPoradi[prikazCislo + 1]
     }
 
     fun zaciatokProgramu(): String {
@@ -48,6 +54,14 @@ class HlavnyBlokKodu(kod: String) : KodovyBlok(getCodeStatements(kod)) {
 
     fun jeAtualnyPrikazCyklus(): Boolean {
         return hotovePrikazyVPoradi[prikazCislo] is CyklickyBlok
+    }
+
+    fun jeAktualnyPrikazContinue(): Boolean {
+        return hotovePrikazyVPoradi[prikazCislo] is Continue
+    }
+
+    fun jeAktualnyPrikazBreak(): Boolean {
+        return hotovePrikazyVPoradi[prikazCislo] is Break
     }
 
      fun dajMiNasledujuciVyhodnotenyPrikaz(): String {

@@ -30,13 +30,14 @@ class KrokovanieKodu : ViewModel() {
         while (!parser.bolPrikazPosledny()) {
             parser.prikazCislo++
             cisloRiadku++
-            cisloRiadku = deterministika.operaciaKliknutieDoPredu(
+            cisloRiadku = deterministika.operaciaVytvaraniaZvyrazneni(
                 parser,
                 zvyraznenie,
                 cisloRiadku,
                 textKodu
             )
             historiaZvyrazneni.add(zvyraznenie.nakopirujSa())
+            vypisIndexy(historiaZvyrazneni[historiaZvyrazneni.size - 1])
         }
         parser.prikazCislo = 0
     }

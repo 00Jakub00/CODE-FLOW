@@ -1,7 +1,7 @@
 package com.example.codeflow
 
-import android.util.Log
 import com.example.visualizationofcode.ui.theme.zloky.kodu.HlavnyBlokKodu
+import org.example.zlozkyKodu.InformativnyPrikaz
 
 class Deterministika {
 
@@ -34,20 +34,33 @@ class Deterministika {
         return line.trim() == "}" || line.trim() == "{"
     }
 
-    fun operaciaKliknutieDoPredu(parser: HlavnyBlokKodu, zvyraznenie: Zvyraznenie, cisloRiadku: Int, textKodu: String): Int {
+    fun operaciaVytvaraniaZvyrazneni(parser: HlavnyBlokKodu, zvyraznenie: Zvyraznenie, cisloRiadku: Int, textKodu: String): Int {
         if (parser.jeAktualnyPrikazInformativny() && !parser.bolPrikazPosledny()) {
             zvyraznenie.odzvyraznitRiadok = true
-
             return zvyraznenie.dajMiPrvyIndexPoslednehoBloku()
         } else if (parser.jeAtualnyPrikazCyklus()) {
             zvyraznenie.odzvyraznitRiadok = true
-            Log.d("KrokovanieKodu", "Zvyraznenie v deterministike: ${zvyraznenie.odzvyraznitRiadok}")
             zvyraznenie.pridajZvyraznenie(najdiIndexyZatvoriekOdIndexu(textKodu, cisloRiadku), "cyklus")
             return cisloRiadku
         } else if (parser.jeAktualnyPrikazKodovyBlok()) {
             zvyraznenie.odzvyraznitRiadok = true
             zvyraznenie.pridajZvyraznenie(najdiIndexyZatvoriekOdIndexu(textKodu, cisloRiadku), "kodovy blok")
             return cisloRiadku
+        } else if (parser.jeAktualnyPrikazContinue()) {
+            zvyraznenie.zmenAktualnyOznacenyRiadok(cisloRiadku)
+            if (parser.dajMiDalsiPrikaz() is InformativnyPrikaz) {
+                zvyraznenie.odzvyraznitRiadok = false
+                return zvyraznenie.dajMiPrvyIndexPoslednehoBloku()
+            } else {
+                zvyraznenie.odzvyraznitRiadok = false
+                val pomocna = zvyraznenie.dajMiPoslednyIndexPoslednehoBloku()
+                return pomocna - 1
+            }
+        } else if (parser.jeAktualnyPrikazBreak()) {
+            zvyraznenie.zmenAktualnyOznacenyRiadok(cisloRiadku)
+            zvyraznenie.odzvyraznitRiadok = false
+            val pomocna = zvyraznenie.dajMiPoslednyIndexPoslednehoBloku()
+            return pomocna - 1
         } else if (parser.jeAkualnyPrikazVystupny()) {
             zvyraznenie.odzvyraznitRiadok = true
             zvyraznenie.odoberZvyraznenie()
@@ -58,5 +71,4 @@ class Deterministika {
             return cisloRiadku
         }
     }
-
 }

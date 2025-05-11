@@ -11,26 +11,30 @@ class Zvyraznenie {
     var zvyraznene: MutableList<ZvyrazneneIndexy> = mutableListOf()
 
     var odzvyraznitRiadok = false
-    var referencaFarba = Color(128, 223, 255)
 
     var aktualnyRiadok = -1
-
-    fun vygenerujMiFarbu() {
-        val red = ((referencaFarba.red * 255) * 1.1f).toInt() % 256
-        val green = ((referencaFarba.green * 255) * 1.1f).toInt() % 256
-        val blue = ((referencaFarba.blue * 255) * 1.1f).toInt() % 256
-
-        referencaFarba = Color(red, green, blue)
-    }
-
 
     fun dajMiPrvyIndexPoslednehoBloku(): Int {
         return zvyraznene.last().indexy.first()
     }
 
+    fun dajMiPoslednyIndexPoslednehoBloku(): Int {
+        return zvyraznene.last().indexy.last()
+    }
+
     fun pridajZvyraznenie(indexy: List<Int>, typBloku: String) {
-        vygenerujMiFarbu()
-        zvyraznene.add(ZvyrazneneIndexy(indexy, referencaFarba, typBloku))
+        var novaFarba: FarbyZvyraznenia? = null
+
+        for (farba in FarbyZvyraznenia.values()) {
+            novaFarba = farba
+            if (!existujeUzTakeZvyraznenie(novaFarba)) {
+                break
+            }
+        }
+
+        if (novaFarba != null) {
+            zvyraznene.add(ZvyrazneneIndexy(indexy, novaFarba.toColor(), typBloku, novaFarba))
+        }
     }
 
     fun zmenAktualnyOznacenyRiadok(index: Int) {
@@ -38,14 +42,14 @@ class Zvyraznenie {
     }
 
     fun odoberZvyraznenie() {
-        zvyraznene.removeAt(zvyraznene.size - 1)
+        zvyraznene.removeLastOrNull()
     }
 
     fun zvyrazniRiadky(textKodu: String): AnnotatedString {
         val riadky = textKodu.lines()
         return buildAnnotatedString {
             riadky.forEachIndexed { index, riadok ->
-                val zvyraznenie = zvyraznene.find { index in it.indexy }
+                val zvyraznenie = zvyraznene.reversed().find { index in it.indexy }
                 if (zvyraznenie != null) {
                     if (index == aktualnyRiadok) {
                         if (odzvyraznitRiadok) {
@@ -74,9 +78,12 @@ class Zvyraznenie {
         }
     }
 
+    fun existujeUzTakeZvyraznenie(farba: FarbyZvyraznenia?): Boolean {
+        return zvyraznene.any { it.zvyraznenaFarba == farba }
+    }
+
     fun nakopirujSa(): Zvyraznenie {
         val nova = Zvyraznenie()
-        nova.referencaFarba = this.referencaFarba
         nova.odzvyraznitRiadok = this.odzvyraznitRiadok
         nova.aktualnyRiadok = this.aktualnyRiadok
         nova.zvyraznene = this.zvyraznene.map { it.copy() }.toMutableList()
