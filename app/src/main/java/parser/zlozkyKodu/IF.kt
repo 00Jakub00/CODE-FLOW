@@ -6,6 +6,7 @@ import parser.zlozkyKodu.PrikazVystupu
 class IF(var podmienka: String) : KodovyBlok(), CastKodu {
 
     var nastaloVnorenie: Boolean = false
+    var vetvaCislo: Int = 0
 
     companion object  {
         fun spracovaniePrikazuIF(kod: String): IF {
@@ -37,11 +38,14 @@ class IF(var podmienka: String) : KodovyBlok(), CastKodu {
                 break
             } else if(prikaz.startsWith("else if") && !nastaloVnorenie) {
                 podmienka = Vyraz.nabalVyraz(prikaz, true)
+                vetvaCislo++
             } else if(prikaz.startsWith("else") && !nastaloVnorenie) {
                 podmienka = "Else vetva"
+                vetvaCislo++
             }
 
             if ((podmienka == "Else vetva" && !nastaloVnorenie) || (!nastaloVnorenie && Vyraz.vyhodnotVyraz(podmienka, premenne) as Boolean )) {
+                vetvaCislo++
                 nastaloVnorenie = true
                 while (poradieVykonanehoPrikazu < pocetPrikazov) {
                     var prikaz = zoznamPrikazov.get(poradieVykonanehoPrikazu)
@@ -100,6 +104,8 @@ class IF(var podmienka: String) : KodovyBlok(), CastKodu {
 
         if (nastaloVnorenie) {
             hotovePrikazy.add(PrikazVystupu("Vynaram sa z vetvy s pomienkou: $podmienka"))
+        } else {
+            vetvaCislo = 0
         }
       //  println("Vraciam $poradieVykonanehoPrikazu prikazov")
         return poradieVykonanehoPrikazu - 1
