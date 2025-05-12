@@ -25,7 +25,8 @@ class IF(var podmienka: String) : KodovyBlok(), CastKodu {
         }
 
         fun jePrikazIF(kod: String): Boolean {
-            return listOf("if", "else if", "else").any { kod.startsWith(it) }
+            val klucove = listOf("else if", "else")
+            return klucove.any { kod.trimStart().startsWith(it) }
         }
     }
 

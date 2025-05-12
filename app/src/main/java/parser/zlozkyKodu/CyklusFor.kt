@@ -121,7 +121,7 @@ class CyklusFor(val datovyTyp: String,
                             if (j == retazec.length - 1) {
                                 kontrolaPrikazu = kontrolaPrikazu.replace(" ", "")
                                 kontrolaPrikazu = kontrolaPrikazu.replace("=", "")
-                                porovnavaciaHodnota = kontrolaPrikazu.toString().toDouble()
+                                porovnavaciaHodnota = Vyraz.vyhodnotVyraz(kontrolaPrikazu, nadradenePremenne).toString().toDouble()
                                 kontrolaPrikazu = ""
                                 hodnotaCislo++
                             }
@@ -152,7 +152,6 @@ class CyklusFor(val datovyTyp: String,
 
         while(Vyraz.vyhodnotVyraz(podmienkaUkoncenia, premenne) as Boolean) {
             if (brk) {
-                BREAKorCONTINUEorNULL = null
                 break
             }
             iteracia++
@@ -183,6 +182,7 @@ class CyklusFor(val datovyTyp: String,
 
                 if (breakContinueNull() == TypKodovehoBloku.BREAK || BREAKorCONTINUEorNULL == TypKodovehoBloku.BREAK) {
                     brk = true
+                    BREAKorCONTINUEorNULL = null
                     break
                 } else if (breakContinueNull() == TypKodovehoBloku.CONTINUE || BREAKorCONTINUEorNULL == TypKodovehoBloku.CONTINUE) {
                     poradieVykonanehoPrikazu = 0

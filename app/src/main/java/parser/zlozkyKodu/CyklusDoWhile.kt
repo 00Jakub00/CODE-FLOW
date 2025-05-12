@@ -44,6 +44,7 @@ class CyklusDoWhile : CyklickyBlok(), CastKodu {
 
                         if (breakContinueNull() == TypKodovehoBloku.BREAK || BREAKorCONTINUEorNULL == TypKodovehoBloku.BREAK) {
                             brk = true
+                            BREAKorCONTINUEorNULL = null
                             break
                         } else if (breakContinueNull() == TypKodovehoBloku.CONTINUE || BREAKorCONTINUEorNULL == TypKodovehoBloku.CONTINUE) {
                             poradieVykonanehoPrikazu = pocetPrikazovVCykle
@@ -59,7 +60,6 @@ class CyklusDoWhile : CyklickyBlok(), CastKodu {
                   //  println(zatvorky[0] != zatvorky[1] && zatvorky[0] > 0)
                 } while (zatvorky[0] != zatvorky[1] || zatvorky[0] == 0)
                 if (brk) {
-                    BREAKorCONTINUEorNULL = null
                     break
                 }
 

@@ -37,6 +37,13 @@ class Zvyraznenie {
         }
     }
 
+    fun vymazVsetkyIffyDoPrvehoCyklu(deterministika: Deterministika) {
+        while (zvyraznene[zvyraznene.size - 1].typBloku == "if") {
+            zvyraznene.removeLastOrNull()
+            deterministika.skoky.removeLastOrNull()
+        }
+    }
+
     fun zmenAktualnyOznacenyRiadok(index: Int) {
         aktualnyRiadok = index
     }

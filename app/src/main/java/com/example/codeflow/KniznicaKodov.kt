@@ -5,35 +5,19 @@ class KniznicaKodov {
 
     init {
         kody.add("""
-        String q = "ahoj"; 
-        String qas = "ahoj"; 
-        int a = 5 * 6 - (12 / 4); 
-        int b = 5 + 5; 
-        if (5 < 4) {
-            System.out.println("ahoj");
-        } 
-        else if (5 > 6) {
-            System.out.println("ahoj");
-        } 
-        else if (5 == 6) {
-            System.out.println("ahoj");
-        } 
-        a = 5 * b; 
-        b = 19;
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                System.out.println(i + j);
-                break;
-            }
-            int j = 0;
-            continue;
-        }
-        int k = 0;
-        while (k < 10) {
-            k = k + 1;
-            continue;
-            System.out.println(k);
-        }
+int terms = 100;
+double pi = 0;
+boolean addTerm = true;
+for (int i = 1; i <= terms * 2; i += 2) {
+    if (addTerm) {
+        pi += 4.0 / i;
+    } 
+    else {
+        pi -= 4.0 / i;
+    }
+    addTerm = !addTerm; 
+}
+System.out.println("Približná hodnota π je: " + pi);
         """.trimIndent())
     }
 }

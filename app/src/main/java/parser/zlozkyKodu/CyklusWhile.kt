@@ -32,7 +32,6 @@ class CyklusWhile(var podmienka: String): CyklickyBlok(), CastKodu {
 
         while (Vyraz.vyhodnotVyraz(podmienka, premenne) as Boolean) {
             if (brk) {
-                BREAKorCONTINUEorNULL = null
                 break
             }
             iteracia++
@@ -58,6 +57,7 @@ class CyklusWhile(var podmienka: String): CyklickyBlok(), CastKodu {
 
                 if (breakContinueNull() == TypKodovehoBloku.BREAK || BREAKorCONTINUEorNULL == TypKodovehoBloku.BREAK) {
                     brk = true
+                    BREAKorCONTINUEorNULL = null
                     break
                 } else if (breakContinueNull() == TypKodovehoBloku.CONTINUE || BREAKorCONTINUEorNULL == TypKodovehoBloku.CONTINUE) {
                     poradieVykonanehoPrikazu = 0

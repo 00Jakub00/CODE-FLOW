@@ -138,7 +138,6 @@ abstract class KodovyBlok(var zoznamPrikazov: List<String>) {
             while (prikaz == ";" || prikaz == "{" || prikaz == "}") {
                 poradieVykonanehoPrikazu++
                 if (poradieVykonanehoPrikazu >= pocetPrikazov) {
-                    hotovePrikazy.add(InformativnyPrikaz("Program sa skončil!"))
                     return -1
                 }
                 prikaz = zoznamPrikazov[poradieVykonanehoPrikazu].trim()

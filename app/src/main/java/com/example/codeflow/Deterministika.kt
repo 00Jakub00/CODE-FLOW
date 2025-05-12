@@ -1,13 +1,15 @@
 package com.example.codeflow
 
+import android.util.Log
 import com.example.visualizationofcode.ui.theme.zloky.kodu.HlavnyBlokKodu
 import com.example.visualizationofcode.ui.theme.zloky.kodu.IF
 import org.example.zlozkyKodu.InformativnyPrikaz
+import parser.zlozkyKodu.PrikazVystupu
 
 class Deterministika {
 
     var odzvyraznenieRiadku: Boolean = false
-    var skok: Int = 0
+    val skoky: MutableList<Int> = mutableListOf()
 
     fun najdiIndexyZatvoriekOdIndexu(text: String, startIndex: Int): List<Int> {
         val lines = text.lines()
@@ -55,14 +57,26 @@ class Deterministika {
         return line.trim() == "}" || line.trim() == "{"
     }
 
+    fun vypisSkoky() {
+        for (i in skoky) {
+            Log.d("Skoky", "Skok: $i")
+        }
+        Log.d("Skoky", "\n")
+    }
+
     fun operaciaVytvaraniaZvyrazneni(parser: HlavnyBlokKodu, zvyraznenie: Zvyraznenie, cisloRiadku: Int, textKodu: String): Int {
         if (parser.jeAktualnyPrikazInformativny() && !parser.bolPrikazPosledny()) {
             zvyraznenie.odzvyraznitRiadok = true
+            Log.d("Krokovanie", "Aktualny prikaz: ${parser.dajMiAktualnyPrikaz().vyhodnotKod()}")
             return zvyraznenie.dajMiPrvyIndexPoslednehoBloku()
         } else if (parser.jeAtualnyPrikazCyklus()) {
             zvyraznenie.odzvyraznitRiadok = true
             zvyraznenie.pridajZvyraznenie(najdiIndexyZatvoriekOdIndexu(textKodu, cisloRiadku), "cyklus")
-            return cisloRiadku
+            if (parser.dajMiDalsiPrikaz() is PrikazVystupu) {
+                return zvyraznenie.dajMiPoslednyIndexPoslednehoBloku() - 1
+            } else {
+                return cisloRiadku
+            }
         } else if (parser.jeAktualnyPrikazIF()) {
             var iffko: IF = parser.dajMiAktualnyPrikaz() as IF
             var riadky = textKodu.lines()
@@ -70,17 +84,25 @@ class Deterministika {
             var riadok = cisloRiadku
             var poradie = 1
             zvyraznenie.odzvyraznitRiadok = true
-            
+
+            Log.d("IFOOOOO", "Aktualny riadok pre IFFF: $cisloRiadku")
             do {
                 cr = dajMiPoslednyIndexPreSkupinuZatvoriek(textKodu, cr)
                 cr++
-            } while (IF.jePrikazIF(riadky[cr]))
-
+                if (cr < riadky.size) {
+                    Log.d("IF", "Aktualny riadok za IFFF je: ${riadky[cr]}")
+                    Log.d("IF", "Zacina s if riadok za IFFF je: ${IF.jePrikazIF(riadky[cr])}")
+                }
+            } while (cr < riadky.size && IF.jePrikazIF(riadky[cr]))
             cr--
-            skok = cr
-
+            skoky.add(cr)
+          //  vypisSkoky()
+          //  Log.d("IF", "Aktualny skok pre IFFF je: $skok")
             if (iffko.vetvaCislo == 0) {
-                return cr
+                return skoky.removeLastOrNull()!!
+            }
+            if (iffko.vetvaCislo == 1) {
+                Log.d("Posledny IF", "Riadok je: $riadok")
             }
 
             while (poradie < iffko.vetvaCislo) {
@@ -90,9 +112,9 @@ class Deterministika {
             }
             zvyraznenie.pridajZvyraznenie(najdiIndexyZatvoriekOdIndexu(textKodu, riadok), "if")
 
-
             return riadok
         } else if (parser.jeAktualnyPrikazContinue()) {
+            zvyraznenie.vymazVsetkyIffyDoPrvehoCyklu(this)
             zvyraznenie.zmenAktualnyOznacenyRiadok(cisloRiadku)
             if (parser.dajMiDalsiPrikaz() is InformativnyPrikaz) {
                 zvyraznenie.odzvyraznitRiadok = false
@@ -103,6 +125,7 @@ class Deterministika {
                 return pomocna - 1
             }
         } else if (parser.jeAktualnyPrikazBreak()) {
+            zvyraznenie.vymazVsetkyIffyDoPrvehoCyklu(this)
             zvyraznenie.zmenAktualnyOznacenyRiadok(cisloRiadku)
             zvyraznenie.odzvyraznitRiadok = false
             val pomocna = zvyraznenie.dajMiPoslednyIndexPoslednehoBloku()
@@ -113,7 +136,11 @@ class Deterministika {
             zvyraznenie.odoberZvyraznenie()
 
             if (typ == "if") {
-                return skok
+                vypisSkoky()
+                var hodnota = skoky.removeLastOrNull()!!
+                vypisSkoky()
+                Log.d("Skoky","Vyskocilo sa na: $hodnota")
+                return hodnota
             }
             return cisloRiadku
         } else {

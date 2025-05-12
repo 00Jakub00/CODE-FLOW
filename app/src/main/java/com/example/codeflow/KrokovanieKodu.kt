@@ -30,6 +30,7 @@ class KrokovanieKodu : ViewModel() {
         while (!parser.bolPrikazPosledny()) {
             parser.prikazCislo++
             cisloRiadku++
+            Log.d("KrokovanieKodu", "Cislo riadku: ${cisloRiadku}")
             cisloRiadku = deterministika.operaciaVytvaraniaZvyrazneni(
                 parser,
                 zvyraznenie,
