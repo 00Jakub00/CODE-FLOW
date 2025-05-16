@@ -68,7 +68,7 @@ class CyklusWhile(var podmienka: String): CyklickyBlok(), CastKodu {
             }
         }
 
-        hotovePrikazy.add(PrikazVystupu("Vystupujeme z cyklu while!"))
+        hotovePrikazy.add(PrikazVystupu("Vystupujeme z cyklu while! ", "cyklus"))
         return pocetPrikazovVCykle
     }
 

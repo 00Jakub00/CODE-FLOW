@@ -200,7 +200,7 @@ class CyklusFor(val datovyTyp: String,
             }
         }
 
-        hotovePrikazy.add(PrikazVystupu("Vystupujeme z cyklu for!"))
+        hotovePrikazy.add(PrikazVystupu("Vystupujeme z cyklu for!", "cyklus"))
         return pocetPrikazovVCykle
     }
 

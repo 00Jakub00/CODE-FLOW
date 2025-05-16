@@ -75,6 +75,10 @@ class HlavnyBlokKodu(kod: String) : KodovyBlok(getCodeStatements(kod)) {
          return hotovePrikazyVPoradi[prikazCislo].vyhodnotKod()
      }
 
+    fun dajMiAktualnyVyhodnotenyPrikaz(): String {
+        return hotovePrikazyVPoradi[prikazCislo].vyhodnotKod()
+    }
+
     fun dajMiPredchadzajuciVyhodnotenyPrikaz(): String {
         if (prikazCislo > 0) {
             prikazCislo--

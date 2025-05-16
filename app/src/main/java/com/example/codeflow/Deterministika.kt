@@ -8,7 +8,6 @@ import parser.zlozkyKodu.PrikazVystupu
 
 class Deterministika {
 
-    var odzvyraznenieRiadku: Boolean = false
     val skoky: MutableList<Int> = mutableListOf()
 
     fun najdiIndexyZatvoriekOdIndexu(text: String, startIndex: Int): List<Int> {
@@ -48,13 +47,6 @@ class Deterministika {
         }
 
         return indices.last()
-    }
-
-
-    fun jePrikazIbaZatvorka(text: String, index: Int): Boolean {
-        val lines = text.lines()
-        val line = lines[index]
-        return line.trim() == "}" || line.trim() == "{"
     }
 
     fun vypisSkoky() {

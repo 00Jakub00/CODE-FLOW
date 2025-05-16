@@ -78,7 +78,7 @@ class CyklusDoWhile : CyklickyBlok(), CastKodu {
            //     println("Takto je vyhodnotena podmienka $vysledok")
             } while (vysledok)
 
-            hotovePrikazy.add(PrikazVystupu("Vystupujem z cyklu Do While!"))
+            hotovePrikazy.add(PrikazVystupu("Vystupujem z cyklu Do While!", "cyklus"))
             pocetPrikazovVCykle++
             return pocetPrikazovVCykle
         }

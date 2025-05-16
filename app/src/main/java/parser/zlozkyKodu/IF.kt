@@ -108,7 +108,7 @@ class IF(var podmienka: String) : KodovyBlok(), CastKodu {
         } while (true)
 
         if (nastaloVnorenie) {
-            hotovePrikazy.add(PrikazVystupu("Vynaram sa z vetvy s pomienkou: $podmienka"))
+            hotovePrikazy.add(PrikazVystupu("Vynaram sa z vetvy s pomienkou: $podmienka", "if"))
         } else {
             vetvaCislo = 0
         }
