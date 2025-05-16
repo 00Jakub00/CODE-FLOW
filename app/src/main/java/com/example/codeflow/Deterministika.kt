@@ -1,6 +1,5 @@
 package com.example.codeflow
 
-import android.util.Log
 import com.example.visualizationofcode.ui.theme.zloky.kodu.HlavnyBlokKodu
 import com.example.visualizationofcode.ui.theme.zloky.kodu.IF
 import org.example.zlozkyKodu.InformativnyPrikaz
@@ -49,17 +48,10 @@ class Deterministika {
         return indices.last()
     }
 
-    fun vypisSkoky() {
-        for (i in skoky) {
-            Log.d("Skoky", "Skok: $i")
-        }
-        Log.d("Skoky", "\n")
-    }
 
     fun operaciaVytvaraniaZvyrazneni(parser: HlavnyBlokKodu, zvyraznenie: Zvyraznenie, cisloRiadku: Int, textKodu: String): Int {
         if (parser.jeAktualnyPrikazInformativny() && !parser.bolPrikazPosledny()) {
             zvyraznenie.odzvyraznitRiadok = true
-            Log.d("Krokovanie", "Aktualny prikaz: ${parser.dajMiAktualnyPrikaz().vyhodnotKod()}")
             return zvyraznenie.dajMiPrvyIndexPoslednehoBloku()
         } else if (parser.jeAtualnyPrikazCyklus()) {
             zvyraznenie.odzvyraznitRiadok = true
@@ -77,25 +69,16 @@ class Deterministika {
             var poradie = 1
             zvyraznenie.odzvyraznitRiadok = true
 
-            Log.d("IFOOOOO", "Aktualny riadok pre IFFF: $cisloRiadku")
             do {
                 cr = dajMiPoslednyIndexPreSkupinuZatvoriek(textKodu, cr)
                 cr++
-                if (cr < riadky.size) {
-                    Log.d("IF", "Aktualny riadok za IFFF je: ${riadky[cr]}")
-                    Log.d("IF", "Zacina s if riadok za IFFF je: ${IF.jePrikazIF(riadky[cr])}")
-                }
             } while (cr < riadky.size && IF.jePrikazIF(riadky[cr]))
             cr--
             skoky.add(cr)
-          //  vypisSkoky()
-          //  Log.d("IF", "Aktualny skok pre IFFF je: $skok")
             if (iffko.vetvaCislo == 0) {
                 return skoky.removeLastOrNull()!!
             }
-            if (iffko.vetvaCislo == 1) {
-                Log.d("Posledny IF", "Riadok je: $riadok")
-            }
+
 
             while (poradie < iffko.vetvaCislo) {
                 riadok = dajMiPoslednyIndexPreSkupinuZatvoriek(textKodu, riadok)
@@ -128,10 +111,7 @@ class Deterministika {
             zvyraznenie.odoberZvyraznenie()
 
             if (typ == "if") {
-                vypisSkoky()
                 var hodnota = skoky.removeLastOrNull()!!
-                vypisSkoky()
-                Log.d("Skoky","Vyskocilo sa na: $hodnota")
                 return hodnota
             }
             return cisloRiadku

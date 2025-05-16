@@ -11,7 +11,6 @@ class CyklusDoWhile : CyklickyBlok(), CastKodu {
 
     companion object  {
          fun rozborPrikazu(kodovyBlok: KodovyBlok): Boolean {
-       //     println("Pouziva sa Do While")
             var cyklusDoWhile = CyklusDoWhile()
             kodovyBlok.posunSaODalsiePrikazy(1)
             var novePrikazy: List<String> = kodovyBlok.zoznamPrikazov.slice(kodovyBlok.poradieVykonanehoPrikazu until kodovyBlok.zoznamPrikazov.size)

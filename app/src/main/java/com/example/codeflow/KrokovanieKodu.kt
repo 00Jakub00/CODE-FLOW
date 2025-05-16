@@ -11,20 +11,17 @@ import com.example.visualizationofcode.ui.theme.zloky.kodu.HlavnyBlokKodu
 import org.example.zlozkyKodu.CyklickyBlok
 import parser.zlozkyKodu.PrikazVystupu
 
-class KrokovanieKodu : ViewModel() {
+class KrokovanieKodu(var textKodu: String) : ViewModel() {
     val historiaZvyrazneni: MutableList<Zvyraznenie> = mutableListOf()
     val deterministika: Deterministika = Deterministika()
     var zvyraznenie by mutableStateOf(Zvyraznenie())
-    val kniznicaKodov: KniznicaKodov = KniznicaKodov()
-    var textKodu: String = kniznicaKodov.kody.get(0)
     val parser: HlavnyBlokKodu = HlavnyBlokKodu(textKodu)
     var cisloRiadku: Int = -1
     var vystupnyText by mutableStateOf("")
     var vstupVystupCyklus = 0;
 
-    init {
+    init  {
         historiaZvyrazneni.add(zvyraznenie.nakopirujSa())
-        Log.d("KrokovanieKodu", "Zvyraznenie: ${historiaZvyrazneni.size}")
         parser.spracujKod()
         vystupnyText = parser.zaciatokProgramu()
         vytvorZvyrazneniaPreJednotliveKroky()
@@ -34,16 +31,13 @@ class KrokovanieKodu : ViewModel() {
         while (!parser.bolPrikazPosledny()) {
             parser.prikazCislo++
             cisloRiadku++
-            Log.d("KrokovanieKodu", "Cislo riadku: ${cisloRiadku}")
             cisloRiadku = deterministika.operaciaVytvaraniaZvyrazneni(
                 parser,
                 zvyraznenie,
                 cisloRiadku,
                 textKodu
             )
-            //dssd
             historiaZvyrazneni.add(zvyraznenie.nakopirujSa())
-            vypisIndexy(historiaZvyrazneni[historiaZvyrazneni.size - 1])
         }
         parser.prikazCislo = 0
     }
@@ -142,18 +136,5 @@ class KrokovanieKodu : ViewModel() {
 
     fun dajMiZvyrazneneRiadky(): AnnotatedString {
         return zvyraznenie.zvyrazniRiadky(textKodu)
-    }
-
-    fun vypisIndexy(zvyraznenie: Zvyraznenie) {
-        Log.d("KrokovanieKodu", "${zvyraznenie.aktualnyRiadok}")
-        Log.d("KrokovanieKodu", "${zvyraznenie.odzvyraznitRiadok}")
-        for (zz in zvyraznenie.zvyraznene) {
-            Log.d("KrokovanieKodu", "Farba: ${zz.farba}")
-            for (index in zz.indexy) {
-                Log.d("KrokovanieKodu", String.format("Index: %d", index))
-            }
-            Log.d("KrokovanieKodu", "\n")
-        }
-        Log.d("KrokovanieKodu", "\n")
     }
 }

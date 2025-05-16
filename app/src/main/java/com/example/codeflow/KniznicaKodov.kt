@@ -1,23 +1,38 @@
 package com.example.codeflow
 
-class KniznicaKodov {
-    val kody: MutableList<String> = mutableListOf()
 
-    init {
-        kody.add("""
-int terms = 100;
-double pi = 0;
-boolean addTerm = true;
-for (int i = 1; i <= terms * 2; i += 2) {
-    if (addTerm) {
-        pi += 4.0 / i;
-    } 
-    else {
-        pi -= 4.0 / i;
+import android.app.Application
+import com.example.codeflow.databaza.DatabaseProvider
+import com.example.codeflow.databaza.Kod
+
+
+class KniznicaKodov(application: Application) {
+    private val database = DatabaseProvider.getDatabase(application)
+    private val rozhranie = database.kodDatabazoveRozhranie()
+    var aktualneVybranyKod: String? = null
+
+    fun zrusitVyber() {
+        aktualneVybranyKod = null
     }
-    addTerm = !addTerm; 
-}
-System.out.println("Približná hodnota π je: " + pi);
-        """.trimIndent())
+
+    fun jeVybranyKod(): Boolean {
+        return aktualneVybranyKod != null
+    }
+
+    suspend fun pridajKod(obsah: String, nazov: String) {
+        rozhranie.vlozKod(Kod(obsah = obsah, nazov = nazov))
+    }
+
+    suspend fun ziskajVsetkyKody(): List<String> {
+        return rozhranie.getVsetkyKody().map { it.nazov }
+    }
+
+
+   suspend fun nastavVybranyKod(nazov: String) {
+        aktualneVybranyKod = rozhranie.dajMiKodPodlaNazvu(nazov)?.obsah
+    }
+
+    suspend fun odstranKod(nazov: String) {
+        rozhranie.odstranKod(nazov)
     }
 }

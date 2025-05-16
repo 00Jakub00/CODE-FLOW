@@ -1,5 +1,6 @@
 package com.example.codeflow.screens
 
+import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -30,32 +31,45 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
+import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.codeflow.KrokovanieKodu
+import com.example.codeflow.ZdielanieKnizniceKodov
 
 
 @Composable
 fun ScreenKrokovanie(
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
+    viewModel: ZdielanieKnizniceKodov
 ) {
-    val krokovanieKodu: KrokovanieKodu = viewModel()
+    val aktualnyKod = viewModel.kniznicaKodov.aktualneVybranyKod
+
+    val krokovanieKodu: KrokovanieKodu = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
+                if (modelClass.isAssignableFrom(KrokovanieKodu::class.java)) {
+                    return KrokovanieKodu(aktualnyKod!!) as T
+                }
+                throw IllegalArgumentException("Unknown ViewModel class")
+            }
+        }
+    )
+
     val scrollState = rememberScrollState()
 
     var showDialog by remember { mutableStateOf(false) }
     var inputText by remember { mutableStateOf("") }
-    val pocetRiadkov = krokovanieKodu.textKodu.lines().size
-    val vyskaTabulkyKodu = if (pocetRiadkov < 9) {
-        0.25f
-    } else {
-        0.4f
-    }
 
     if (showDialog) {
         AlertDialog(
@@ -77,7 +91,10 @@ fun ScreenKrokovanie(
                     }
                     showDialog = false
                     inputText = ""
-                }) {
+                }, colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(77, 163, 191),
+                    contentColor = Color.White
+                ),) {
                     Text("OK")
                 }
             },
@@ -85,7 +102,10 @@ fun ScreenKrokovanie(
                 Button(onClick = {
                     showDialog = false
                     inputText = ""
-                }) {
+                },colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(77, 163, 191),
+                    contentColor = Color.White
+                ),) {
                     Text("Zrušiť")
                 }
             }
@@ -100,7 +120,7 @@ fun ScreenKrokovanie(
         Text(
             text = "VIZUALIZÁCIA",
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            fontSize = 30.sp,
+            fontSize = 23.sp,
             style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold)
         )
         Box(
@@ -202,7 +222,7 @@ fun ScreenKrokovanie(
         Text(
             "KROKOVANIE",
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            fontSize = 30.sp,
+            fontSize = 23.sp,
             style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold)
         )
         TextField(
@@ -221,7 +241,7 @@ fun ScreenKrokovanie(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Button(onClick = { navController.navigate("uvod") },
+            Button(onClick = { navController.popBackStack() },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(77, 163, 191),
                     contentColor = Color.White
@@ -230,7 +250,6 @@ fun ScreenKrokovanie(
             ) {
                 Text(
                     "Späť",
-                    fontSize = 25.sp,
                     color = Color.White
                 )
             }
