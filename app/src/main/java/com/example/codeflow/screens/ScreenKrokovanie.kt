@@ -1,9 +1,5 @@
 package com.example.codeflow.screens
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -23,7 +19,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -41,27 +36,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.codeflow.KrokovanieKodu
-import com.example.codeflow.ui.theme.CodeFlowTheme
-
-
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            CodeFlowTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    CodeFlowScreen(modifier = Modifier.padding(innerPadding))
-                }
-            }
-        }
-    }
-}
 
 
 @Composable
-fun CodeFlowScreen(modifier: Modifier = Modifier) {
+fun ScreenKrokovanie(
+    modifier: Modifier = Modifier,
+    navController: NavController
+) {
     val krokovanieKodu: KrokovanieKodu = viewModel()
     val scrollState = rememberScrollState()
 
@@ -126,7 +109,7 @@ fun CodeFlowScreen(modifier: Modifier = Modifier) {
                 .height(LocalConfiguration.current.screenHeightDp.dp * 0.3f)
                 .height(150.dp)
                 .verticalScroll(scrollState)
-                .border(1.dp, Color.Gray) 
+                .border(1.dp, Color.Gray)
         ) {
             Text(
                 text = krokovanieKodu.dajMiZvyrazneneRiadky(),
@@ -231,15 +214,14 @@ fun CodeFlowScreen(modifier: Modifier = Modifier) {
                 .height(LocalConfiguration.current.screenHeightDp.dp * 0.2f)
         )
 
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.height(10.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Button(onClick = {
-            },
+            Button(onClick = { navController.navigate("uvod") },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(77, 163, 191),
                     contentColor = Color.White
@@ -262,5 +244,3 @@ fun CodeFlowScreen(modifier: Modifier = Modifier) {
         }
     }
 }
-
-
