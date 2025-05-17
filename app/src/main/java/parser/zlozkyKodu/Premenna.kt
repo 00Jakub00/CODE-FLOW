@@ -34,9 +34,8 @@ class Premenna (
 
             var indexRovnitko = retazec.indexOf('=')
 
-            // Spracovanie dátového typu
             val slovicka = retazec.substring(0, indexRovnitko).trim().split(" ")
-            if (slovicka.size < 2) return null // Očakávame minimálne dva slová: "typ nazov"
+            if (slovicka.size < 2) return null
 
             premenna[0] = when (slovicka[0]) {
                 "String" -> String::class.java
@@ -47,12 +46,11 @@ class Premenna (
                 "float" -> Float::class.java
                 "boolean" -> Boolean::class.java
                 "char" -> Char::class.java
-                else -> return null // Neznámy dátový typ
+                else -> return null
             }
 
-            premenna[1] = slovicka[1] // Názov premennej
+            premenna[1] = slovicka[1]
 
-            // Spracovanie hodnoty výrazu
             val vyraz = retazec.substring(indexRovnitko + 1).trim()
             premenna[2] = Vyraz.vyhodnotVyraz(vyraz, nadradenePremenne)
 

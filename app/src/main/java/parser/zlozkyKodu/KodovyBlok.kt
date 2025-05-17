@@ -101,7 +101,7 @@ abstract class KodovyBlok(var zoznamPrikazov: List<String>) {
     }
 
      fun zistiOAkyTypKoduSaJedna(kod: String): TypKodovehoBloku? {
-        val kodTrim = kod.trim()  // Odstránime prebytočné medzery
+        val kodTrim = kod.trim()
 
         when {
             listOf("String", "int", "double", "byte", "short", "float", "boolean", "char")
@@ -117,13 +117,11 @@ abstract class KodovyBlok(var zoznamPrikazov: List<String>) {
             }
         }
 
-        // Priraďovací výraz (podporuje zátvorky)
         val regexPriradenie = Regex("([a-zA-Z_][a-zA-Z0-9_]*)\\s*=\\s*(.+)")
         if (regexPriradenie.matches(kodTrim)) {
             return TypKodovehoBloku.VYRAZ
         }
 
-        // Inkrementačný/dekrementačný výraz (podporuje zátvorky)
         val regexInkrementacia = Regex("([+\\-]{2})?([a-zA-Z_][a-zA-Z0-9_]*)\\s*([+\\-*/%]=|\\+\\+|--)\\s*(.+)?")
         if (regexInkrementacia.matches(kodTrim)) {
             return TypKodovehoBloku.VYRAZ_ID
@@ -142,7 +140,6 @@ abstract class KodovyBlok(var zoznamPrikazov: List<String>) {
                 }
                 prikaz = zoznamPrikazov[poradieVykonanehoPrikazu].trim()
             }
-           // println(prikaz)
             manazujPrikaz(prikaz)
             poradieVykonanehoPrikazu++
         }

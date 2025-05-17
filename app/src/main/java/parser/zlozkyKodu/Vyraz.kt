@@ -28,13 +28,11 @@ class Vyraz (
         }
 
         fun vyhodnotVyraz(vyraz: String, nadradenePremenne: MutableList<Array<Any?>?>): Any? {
-            // Vytvorenie JEXL engine
+
             val jexl = JexlBuilder().create()
 
-            // Pripravenie kontextu (ukladá premenné)
             val context = MapContext()
 
-            // Pridanie všetkých nadradených premenných do kontextu
             nadradenePremenne.forEach { pole ->
                 val typ = pole?.getOrNull(0) as? Class<*>
                 val nazov = pole?.getOrNull(1) as? String
@@ -45,9 +43,8 @@ class Vyraz (
                 }
             }
 
-            // Vytvorenie JEXL výrazu
             val expression = jexl.createExpression(vyraz)
-            // Vyhodnotenie výrazu
+
             return expression.evaluate(context)
         }
 
