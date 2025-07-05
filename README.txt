@@ -61,9 +61,9 @@ The app contains 4 key screens:
 
 ---
 
-## 📷 Screenshots & Demo
-
-![Main screen](images/main_screen.png)
+## 📷 Screenshots & Video demonstration
+screenshots: https://github.com/00Jakub00/CODE-FLOW/tree/main/images
+video: https://github.com/00Jakub00/CODE-FLOW/tree/main/video%20demonstration
 
 ---
 
