@@ -76,5 +76,5 @@ I created this app as a personal and academic project to help others learn progr
 ## 📄 License
 
 This is a personal educational project. Contact me for collaboration or demo access.
-email: jakubgaly77@gmail.com
+📧 **jakubgaly77@gmail.com**
 
