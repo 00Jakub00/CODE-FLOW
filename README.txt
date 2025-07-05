@@ -11,7 +11,7 @@ Designed primarily for beginners, the app bridges the gap between writing code a
 
 - 🔁 **Step-by-step execution** – Go forward and backward through the code
 - 📌 **Jump to any step** – Instant navigation to a specific line of execution
-- ✍️ **Human-readable commentary** – Each step is explained in plain Slovak
+- ✍️ **Human-readable commentary** – Each step is explained in simple Slovak
 - 🎯 **Syntax-aware code editor** – Supports writing and modifying custom code
 - 🌐 **Parser built from scratch** – No external libraries used
 
