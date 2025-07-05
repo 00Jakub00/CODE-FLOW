@@ -11,7 +11,7 @@ Designed primarily for beginners, the app bridges the gap between writing code a
 
 - 🔁 **Step-by-step execution** – Go forward and backward through the code
 - 📌 **Jump to any step** – Instant navigation to a specific line of execution
-- ✍️ **Human-readable commentary** – Each step is explained in plain English
+- ✍️ **Human-readable commentary** – Each step is explained in simple Slovak
 - 🎯 **Syntax-aware code editor** – Supports writing and modifying custom code
 - 🌐 **Parser built from scratch** – No external libraries used
 
@@ -61,18 +61,9 @@ The app contains 4 key screens:
 
 ---
 
-## 📷 Screenshots & Demo
-
-*(Add GIFs or screenshots if possible)*
-
----
-
-## 💡 Future Improvements
-
-- Multi-language support (e.g., Kotlin, Python)
-- Syntax highlighting and real-time validation
-- AI-generated explanations of code behavior
-- Sharing code snippets across devices or cloud
+## 📷 Screenshots & Video demonstration
+screenshots: https://github.com/00Jakub00/CODE-FLOW/tree/main/images
+video: https://github.com/00Jakub00/CODE-FLOW/tree/main/video%20demonstration
 
 ---
 
@@ -85,4 +76,5 @@ I created this app as a personal and academic project to help others learn progr
 ## 📄 License
 
 This is a personal educational project. Contact me for collaboration or demo access.
+📧 **jakubgaly77@gmail.com**
 
