@@ -13,7 +13,7 @@ Designed primarily for beginners, the app bridges the gap between writing code a
 - 📌 **Jump to any step** – Instant navigation to a specific line of execution
 - ✍️ **Human-readable commentary** – Each step is explained in simple Slovak
 - 🎯 **Syntax-aware code editor** – Supports writing and modifying custom code
-- 🌐 **Parser built from scratch** – No external libraries used
+- 🌐 **Parser built from scratch** – No external libraries used. Only expression evaluation library
 
 ---
 
@@ -57,7 +57,7 @@ The app contains 4 key screens:
 
 - Programming **beginners** and students
 - Teachers looking for **teaching aids**
-- Anyone who wants to **demystify how code runs**
+- Anyone who wants to **understand how code runs**
 
 ---
 
